@@ -1,5 +1,6 @@
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
+
 " Tools
     Plug 'airblade/vim-gitgutter'
     Plug 'scrooloose/nerdtree'
@@ -9,9 +10,11 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'ap/vim-css-color' "Displays a preview of colors with CSS
     Plug 'vim-scripts/fountain.vim'
 " Theme
-"    Plug 'arcticicestudio/nord-vim'
-    Plug 'ayu-theme/ayu-vim'
-   Plug 'vimwiki/vimwiki'
+    Plug 'arcticicestudio/nord-vim'
+"Format
+    Plug 'sbdchd/neoformat'
+"Vimwiki
+    Plug 'vimwiki/vimwiki'
 " Airline
     Plug 'vim-airline/vim-airline'
 call plug#end()
@@ -40,14 +43,9 @@ set comments=sl:/*,mb:*,elx:*/
 set clipboard^=unnamed,unnamedplus
 
 "Theme settings
-set termguicolors     " enable true colors support
-let ayucolor="light"  " for light version of theme
-let ayucolor="mirage" " for mirage version of theme
-let ayucolor="dark"   " for dark version of theme
-colorscheme ayu
 set cursorline
 set t_Co=256
-"colorscheme nord
+colorscheme nord
 
 "Find files
 set path+=**
@@ -151,7 +149,10 @@ set updatetime=100  "updatetime of 100ms from modification done to show changed 
 map <C-g> :GitGutterToggle
 
 
-
-
-
-
+"Formatting c/c++ code
+let g:neoformat_cpp_clangformat = {
+    \ 'exe': 'clang-format',
+    \ 'args': ['--style="{IndentWidth: 4}"']
+\}
+let g:neoformat_enabled_cpp = ['clangformat']
+let g:neoformat_enabled_c = ['clangformat']
