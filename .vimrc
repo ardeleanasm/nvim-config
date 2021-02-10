@@ -1,6 +1,5 @@
 " Plugins
 call plug#begin('~/.config/nvim/plugged')
-
 " Tools
     Plug 'airblade/vim-gitgutter'
     Plug 'scrooloose/nerdtree'
@@ -10,8 +9,11 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'ap/vim-css-color' "Displays a preview of colors with CSS
     Plug 'vim-scripts/fountain.vim'
 " Theme
-    Plug 'arcticicestudio/nord-vim'
-
+"    Plug 'arcticicestudio/nord-vim'
+    Plug 'ayu-theme/ayu-vim'
+   Plug 'vimwiki/vimwiki'
+" Airline
+    Plug 'vim-airline/vim-airline'
 call plug#end()
 
 
@@ -38,9 +40,14 @@ set comments=sl:/*,mb:*,elx:*/
 set clipboard^=unnamed,unnamedplus
 
 "Theme settings
+set termguicolors     " enable true colors support
+let ayucolor="light"  " for light version of theme
+let ayucolor="mirage" " for mirage version of theme
+let ayucolor="dark"   " for dark version of theme
+colorscheme ayu
 set cursorline
 set t_Co=256
-colorscheme nord
+"colorscheme nord
 
 "Find files
 set path+=**
@@ -48,17 +55,38 @@ set path+=**
 "Display all matching
 set wildmenu
 
+"Airline configuration
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+function! AirlineInit()
+  let g:airline#extensions#hunks#enabled=0
+  let g:airline#extensions#branch#enabled=1
+  let g:airline_section_a = airline#section#create(['mode',' ','branch'])
+  let g:airline_section_b = airline#section#create_left(['ffenc','hunks','%f'])
+  let g:airline_section_c = airline#section#create(['filetype'])
+  let g:airline_section_x = airline#section#create(['%P'])
+  let g:airline_section_y = airline#section#create(['%B'])
+  let g:airline_section_z = airline#section#create_right(['%l','%c'])
+endfunction
+
+autocmd VimEnter * call AirlineInit()
+
+"let g:airline_statusline_ontop=1
+
+
 "Status-line
-set statusline=
-set statusline+=%#IncSearch#
-set statusline+=\ %y
-set statusline+=\ %r
-set statusline+=%#CursorLineNr#
-set statusline+=\ %F
-set statusline+=%= "Right side settings
-set statusline+=%#Search#
-set statusline+=\ %l/%ndingsL
-set statusline+=\ [%c]
+"set statusline=
+"set statusline+=%#IncSearch#
+"set statusline+=\ %y
+"set statusline+=\ %r
+"set statusline+=%#CursorLineNr#
+"set statusline+=\ %F
+"set statusline+=%= "Right side settings
+"set statusline+=%#Search#
+"set statusline+=\ %l/%n
+"set statusline+=\ [%c]
 
 "Key bindings
 "configure key leader to space
@@ -121,6 +149,9 @@ autocmd BufWritePost *.cpp,*.h,*.c call UpdateTags()
 "Gitgutter configuration
 set updatetime=100  "updatetime of 100ms from modification done to show changed icon
 map <C-g> :GitGutterToggle
+
+
+
 
 
 
