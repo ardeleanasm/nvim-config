@@ -60,7 +60,8 @@ function! GitStatus()
   return printf('+%d ~%d -%d', a, m, r)
 endfunction
 function! AirlineInit()
-  let g:airline#extensions#hunks#enabled=0
+  set ttimeoutlen=50
+  let g:airline#extensions#hunks#enabled=1
   let g:airline#extensions#branch#enabled=1
   let g:airline_section_a = airline#section#create(['mode',' ','branch'])
   let g:airline_section_b = airline#section#create_left(['ffenc','hunks','%f'])
