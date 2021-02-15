@@ -11,7 +11,12 @@ call plug#begin('~/.config/nvim/plugged')
     Plug 'vim-scripts/fountain.vim'
 " Theme
     Plug 'arcticicestudio/nord-vim'
-
+"Format
+    Plug 'sbdchd/neoformat'
+"Vimwiki
+    Plug 'vimwiki/vimwiki'
+" Airline
+    Plug 'vim-airline/vim-airline'
 call plug#end()
 
 
@@ -48,17 +53,38 @@ set path+=**
 "Display all matching
 set wildmenu
 
+"Airline configuration
+function! GitStatus()
+  let [a,m,r] = GitGutterGetHunkSummary()
+  return printf('+%d ~%d -%d', a, m, r)
+endfunction
+function! AirlineInit()
+  let g:airline#extensions#hunks#enabled=0
+  let g:airline#extensions#branch#enabled=1
+  let g:airline_section_a = airline#section#create(['mode',' ','branch'])
+  let g:airline_section_b = airline#section#create_left(['ffenc','hunks','%f'])
+  let g:airline_section_c = airline#section#create(['filetype'])
+  let g:airline_section_x = airline#section#create(['%P'])
+  let g:airline_section_y = airline#section#create(['%B'])
+  let g:airline_section_z = airline#section#create_right(['%l/%n','%c'])
+endfunction
+
+autocmd VimEnter * call AirlineInit()
+
+"let g:airline_statusline_ontop=1
+
+
 "Status-line
-set statusline=
-set statusline+=%#IncSearch#
-set statusline+=\ %y
-set statusline+=\ %r
-set statusline+=%#CursorLineNr#
-set statusline+=\ %F
-set statusline+=%= "Right side settings
-set statusline+=%#Search#
-set statusline+=\ %l/%ndingsL
-set statusline+=\ [%c]
+"set statusline=
+"set statusline+=%#IncSearch#
+"set statusline+=\ %y
+"set statusline+=\ %r
+"set statusline+=%#CursorLineNr#
+"set statusline+=\ %F
+"set statusline+=%= "Right side settings
+"set statusline+=%#Search#
+"set statusline+=\ %l/%n
+"set statusline+=\ [%c]
 
 "Key bindings
 "configure key leader to space
@@ -123,4 +149,10 @@ set updatetime=100  "updatetime of 100ms from modification done to show changed 
 map <C-g> :GitGutterToggle
 
 
-
+"Formatting c/c++ code
+let g:neoformat_cpp_clangformat = {
+    \ 'exe': 'clang-format',
+    \ 'args': ['--style="{IndentWidth: 4}"']
+\}
+let g:neoformat_enabled_cpp = ['clangformat']
+let g:neoformat_enabled_c = ['clangformat']
