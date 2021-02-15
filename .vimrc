@@ -3,6 +3,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 " Tools
     Plug 'airblade/vim-gitgutter'
+    Plug 'tpope/vim-fugitive'
     Plug 'scrooloose/nerdtree'
 "   Plug 'vivien/vim-linux-coding-style'
 " Syntax
